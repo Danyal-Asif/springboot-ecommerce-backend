@@ -2,6 +2,7 @@ package com.example.ordermanagement.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,12 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmail(email);
 	}
 
+	@Override
+	public User findUserById(Long id) {
+		// TODO Auto-generated method stub
+		Optional<User> user=userRepository.findById(id);
+		return user.orElse(null);
+	}
 	@Override
 	public void saveUser(UserDto userDto) {
 		// TODO Auto-generated method stub

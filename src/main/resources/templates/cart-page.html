@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+
+        <!-- Progress Header -->
+        <div class="mb-4 text-uppercase fw-bold">
+            <span class="text-dark">Shopping Cart</span>
+            <span class="text-muted"> › Checkout Details › Order Complete</span>
+        </div>
+
+        <!-- Success Message -->
+        <div class="alert alert-success d-flex align-items-center" role="alert" th:if="${newProduct != null}">
+            <span class="me-2">✔</span>
+            <span>
+                "<strong th:text="${newProduct}"></strong>" has been added to your cart.
+            </span>
+        </div>
+
+        <!-- Cart Card -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <table class="table align-middle">
+                    <thead class="border-bottom">
+                        <tr class="text-uppercase text-muted small">
+                            <th>Product</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="item : ${cartItems}">
+                            <!-- Product -->
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <!-- <img th:src="@{/images/sample.png}"
+                                 class="me-3"
+                                 style="width:60px;height:60px;object-fit:cover;"> -->
+                                    <span th:text="${item.pName}"></span>
+                                </div>
+                            </td>
+
+                            <!-- Price -->
+                            <td class="text-end">
+                                $<span th:text="${item.price}"></span>
+                            </td>
+
+                            <!-- Quantity -->
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+
+                                    <!-- Decrease -->
+                                    <form th:action="@{/cart/decrease}" method="post" class="d-inline">
+                                        <input type="hidden" name="productID" th:value="${item.id}" />
+                                        <button type="submit" class="btn btn-outline-secondary">−</button>
+                                    </form>
+
+                                    <!-- Quantity (display only) -->
+                                    <span class="btn btn-outline-secondary disabled" th:text="${item.quantity}"></span>
+
+                                    <!-- Increase -->
+                                    <form th:action="@{/cart/increase}" method="post" class="d-inline">
+                                        <input type="hidden" name="productID" th:value="${item.id}" />
+                                        <button type="submit" class="btn btn-outline-secondary">+</button>
+                                    </form>
+
+                                </div>
+                            </td>
+
+
+                            <!-- Total -->
+                            <td class="text-end">
+                                $<span th:text="${item.totalPrice}"></span>
+                            </td>
+
+                            <!-- Remove -->
+                            <td class="text-center">
+                                <form th:action="@{/cart/remove}" method="post" class="d-inline">
+                                    <input type="hidden" name="productID" th:value="${item.id}" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        Remove
+                                    </button>
+
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Update Cart Button -->
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="/products/catPd" class="btn btn-outline-secondary">
+                        ← Continue Shopping
+                    </a>
+
+                    <div class="text-end">
+                        <span class="text-muted">Total</span>
+                        <h3 class="fw-bold mb-0">
+                            $$<span th:text="${#numbers.formatDecimal(checkoutPrice, 1, 2)}"></span>
+                        </h3>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

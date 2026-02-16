@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.ordermanagement.entity.User;
 import com.example.ordermanagement.order.model.Cart;
 import com.example.ordermanagement.order.model.Product;
+import com.example.ordermanagement.order.service.CartService;
 import com.example.ordermanagement.order.service.ProductService;
 import com.example.ordermanagement.service.UserService;
 
@@ -31,38 +32,14 @@ public class CartController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CartService cartService;
+
     @PostMapping("/add")
     public String addToCart(@RequestParam Long productId,Principal principal, HttpSession session) {
 
-        // Customer cust = (Customer) session.getAttribute("LOGGED_IN_USER");
         User cust = userService.findUserByEmail(principal.getName());
-        Product product = productService.getProduct(productId);
-
-        List<Cart> cart = cust.getCart();
-
-        // If cart is null → create it
-        if (cart == null) {
-            cart = new ArrayList<>();
-            Cart item = new Cart(product.getId(), product.getName(),
-                    product.getPrice(), 1, product.getPrice());
-            cart.add(item);
-            cust.setCart(cart);
-            return "redirect:/products/catPd";
-        }
-
-        // If cart exists → check if product already there
-        for (Cart c : cart) {
-            if (c.getId().equals(productId)) {
-                c.setQuantity(c.getQuantity() + 1);
-                c.setTotalPrice(c.getPrice() * c.getQuantity());
-                return "redirect:/products/catPd";
-            }
-        }
-
-        // Product not found → add new item
-        Cart item = new Cart(product.getId(), product.getName(),
-                product.getPrice(), 1, product.getPrice());
-        cart.add(item);
+        cartService.add(productId, cust.getId());
         return "redirect:/products/catPd";
     }
 
@@ -79,6 +56,7 @@ public class CartController {
         double checkoutPrice = 0;
         if(cartItems!=null){
         for (Cart cart : cartItems) {
+            System.out.println(cart.getpName());
             checkoutPrice += cart.getTotalPrice();
         }}
 
