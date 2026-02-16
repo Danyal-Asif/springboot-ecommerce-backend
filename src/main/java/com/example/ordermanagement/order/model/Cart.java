@@ -5,8 +5,11 @@ import java.math.RoundingMode;
 
 import com.example.ordermanagement.entity.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,42 +17,48 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user_id;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product_id;
+    private Product product;
 
     private int quantity;
     private double price;
+
+    @Column(name="total_price")
     private double totalPrice;
 
-    public Cart(User user_id, Product product_id, double price, int quantity, double total) {
-        this.user_id = user_id;
-        this.product_id = product_id;
+    public Cart()
+    {}
+    
+    public Cart(User user, Product product, double price, int quantity, double total) {
+        this.user = user;
+        this.product = product;
         this.price = price;
         this.quantity = quantity;
         this.totalPrice = total;
     }
 
     public User getUser_id() {
-        return user_id;
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser_id(User user) {
+        this.user = user;
     }
 
     public Product getProduct_id() {
-        return product_id;
+        return product;
     }
 
-    public void setProduct_id(Product product_id) {
-        this.product_id = product_id;
+    public void setProduct_id(Product product) {
+        this.product = product;
     }
 
     public double getPrice() {
@@ -88,8 +97,8 @@ public class Cart {
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", user_id='" + user_id + '\'' +
-                ", product_id=" + product_id +
+                ", user_id='" + user + '\'' +
+                ", product_id=" + product +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +

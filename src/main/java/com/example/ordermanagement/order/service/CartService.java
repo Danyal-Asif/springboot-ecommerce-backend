@@ -1,5 +1,6 @@
 package com.example.ordermanagement.order.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,18 @@ public class CartService {
 
     private Optional<Cart> checkProductExistInCart(Long product_id,Long user_id){
         Cart cart=null;
-        cart=cartRepository.getCartItemsOnUserId(user_id,product_id);
+        cart=cartRepository.findByUserIdAndProductId(user_id, product_id);
         if(cart==null){
-            return null;
+            return Optional.empty();
         }
         return Optional.of(cart);
+    }
+
+    public List<Cart> getAllFromCart(Iterable<Long> user_id){
+        List<Cart> cartItems=cartRepository.findAllById(user_id);
+        if(cartItems.isEmpty()){
+            return null;
+        }
+        return cartItems;
     }
 }

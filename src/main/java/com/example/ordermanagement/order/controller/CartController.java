@@ -36,7 +36,7 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam Long productId,Principal principal, HttpSession session) {
+    public String addToCart(@RequestParam Long productId, Principal principal, HttpSession session) {
 
         User cust = userService.findUserByEmail(principal.getName());
         cartService.add(productId, cust.getId());
@@ -44,21 +44,23 @@ public class CartController {
     }
 
     @GetMapping("/mycart")
-    public String showCart(HttpSession session, Model model,Principal principal) {
+    public String showCart(HttpSession session, Model model, Principal principal) {
 
         // Customer user = (Customer) session.getAttribute("LOGGED_IN_USER");
-         User user = userService.findUserByEmail(principal.getName());
+        User user = userService.findUserByEmail(principal.getName());
         if (user == null) {
             return "redirect:/order/login";
         }
 
-        List<Cart> cartItems = user.getCart();
+        List<Cart> cartItems = cartService.getAllFromCart(List.of(user.getId()));
         double checkoutPrice = 0;
-        if(cartItems!=null){
-        for (Cart cart : cartItems) {
-            System.out.println(cart.getpName());
-            checkoutPrice += cart.getTotalPrice();
-        }}
+        Long mostRecentProductID = 0L;
+        if (cartItems != null) {
+            for (Cart cart : cartItems) {
+                checkoutPrice += cart.getTotalPrice();
+                mostRecentProductID = cart.getId();
+            }
+        }
 
         model.addAttribute("name", user.getName());
         model.addAttribute("cartItems", user.getCart());
@@ -66,16 +68,15 @@ public class CartController {
         if (user.getCart() == null) {
             model.addAttribute("newProduct", null);
         } else {
-
-            model.addAttribute("newProduct",
-                    user.getCart().size() == 0 ? null : user.getCart().get(user.getCart().size() - 1).getpName());
+            String productName = productService.getProduct(mostRecentProductID).getName();
+            model.addAttribute("newProduct",productName);
         }
         return "cart-page";
     }
 
     @PostMapping("/decrease")
-    public String minusItem(@RequestParam Long productID, HttpSession session, Model model,Principal principal) {
-         User user = userService.findUserByEmail(principal.getName());
+    public String minusItem(@RequestParam Long productID, HttpSession session, Model model, Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
         if (user == null) {
             return "redirect:/order/login";
         }
@@ -110,8 +111,8 @@ public class CartController {
     }
 
     @PostMapping("/increase")
-    public String plusItem(@RequestParam Long productID, HttpSession session, Model model,Principal principal) {
-       User user = userService.findUserByEmail(principal.getName());
+    public String plusItem(@RequestParam Long productID, HttpSession session, Model model, Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
         if (user == null) {
             return "redirect:/order/login";
         }
@@ -142,7 +143,7 @@ public class CartController {
     }
 
     @PostMapping("/remove")
-    public String removeItem(@RequestParam Long productID, HttpSession session, Model model,Principal principal) {
+    public String removeItem(@RequestParam Long productID, HttpSession session, Model model, Principal principal) {
         User user = userService.findUserByEmail(principal.getName());
         if (user == null) {
             return "redirect:/order/login";
@@ -158,8 +159,8 @@ public class CartController {
                 break;
             }
 
-       }
-       List<Cart> cartItems = user.getCart();
+        }
+        List<Cart> cartItems = user.getCart();
         double checkoutPrice = 0;
         for (Cart cart : cartItems) {
             checkoutPrice += cart.getTotalPrice();
