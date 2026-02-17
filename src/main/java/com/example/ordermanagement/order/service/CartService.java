@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.ordermanagement.order.DTO.CartDTO;
 import com.example.ordermanagement.order.model.Cart;
 import com.example.ordermanagement.order.model.Product;
 import com.example.ordermanagement.order.repo.CartRepository;
@@ -50,11 +51,13 @@ public class CartService {
         return Optional.of(cart);
     }
 
-    public List<Cart> getAllFromCart(Iterable<Long> user_id){
-        List<Cart> cartItems=cartRepository.findAllById(user_id);
+    public List<CartDTO> getAllFromCart(Long user_id){
+        List<Cart> cartItems=cartRepository.findAllByUserId(user_id);
         if(cartItems.isEmpty()){
             return null;
         }
-        return cartItems;
+        return cartItems.stream().map(c->new CartDTO(c.getId(),c.getProduct_id().getName(),c.getPrice(),
+                c.getQuantity(),
+                c.getTotalPrice())).toList();
     }
 }

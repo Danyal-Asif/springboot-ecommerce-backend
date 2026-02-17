@@ -18,14 +18,6 @@
             <span class="text-muted"> › Checkout Details › Order Complete</span>
         </div>
 
-        <!-- Success Message -->
-        <div class="alert alert-success d-flex align-items-center" role="alert" th:if="${newProduct != null}">
-            <span class="me-2">✔</span>
-            <span>
-                "<strong th:text="${newProduct}"></strong>" has been added to your cart.
-            </span>
-        </div>
-
         <!-- Cart Card -->
         <div class="card shadow-sm">
             <div class="card-body">
@@ -49,7 +41,7 @@
                                     <!-- <img th:src="@{/images/sample.png}"
                                  class="me-3"
                                  style="width:60px;height:60px;object-fit:cover;"> -->
-                                    <span th:text="${item.pName}"></span>
+                                    <span th:text="${item.productName}"></span>
                                 </div>
                             </td>
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.ordermanagement.entity.User;
+import com.example.ordermanagement.order.DTO.CartDTO;
 import com.example.ordermanagement.order.model.Cart;
 import com.example.ordermanagement.order.model.Product;
 import com.example.ordermanagement.order.service.CartService;
@@ -52,25 +53,18 @@ public class CartController {
             return "redirect:/order/login";
         }
 
-        List<Cart> cartItems = cartService.getAllFromCart(List.of(user.getId()));
+        List<CartDTO> cartItems = cartService.getAllFromCart(user.getId());
         double checkoutPrice = 0;
-        Long mostRecentProductID = 0L;
         if (cartItems != null) {
-            for (Cart cart : cartItems) {
-                checkoutPrice += cart.getTotalPrice();
-                mostRecentProductID = cart.getId();
+            for (CartDTO cart : cartItems) {
+                checkoutPrice += cart.totalPrice();
             }
         }
 
-        model.addAttribute("name", user.getName());
-        model.addAttribute("cartItems", user.getCart());
+        
+        model.addAttribute("cartItems", cartItems);
         model.addAttribute("checkoutPrice", checkoutPrice);
-        if (user.getCart() == null) {
-            model.addAttribute("newProduct", null);
-        } else {
-            String productName = productService.getProduct(mostRecentProductID).getName();
-            model.addAttribute("newProduct",productName);
-        }
+
         return "cart-page";
     }
 
