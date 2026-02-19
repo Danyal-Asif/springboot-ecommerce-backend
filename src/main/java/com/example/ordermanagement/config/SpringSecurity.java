@@ -36,30 +36,36 @@ public class SpringSecurity {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/register/**").permitAll()
-						.requestMatchers("/welcome").hasRole("USER")
-						.requestMatchers("/products/catPd").hasRole("USER")
-						.requestMatchers("/cart/mycart").hasRole("USER")
-						.requestMatchers("/cart/decrease").hasRole("USER")
-						.requestMatchers("/cart/increase").hasRole("USER")
-						.requestMatchers("/cart/add").hasRole("USER")
-						.requestMatchers("/index").permitAll() 
-						.requestMatchers("/deleteUser").hasRole("ADMIN")
-						.requestMatchers("/deleteUser/delete").hasRole("ADMIN")
-						.requestMatchers("/updateUser").hasRole("ADMIN")
-						.requestMatchers("/updateUser/update").hasRole("ADMIN")
-						.requestMatchers("/users").hasRole("ADMIN"))
-				.formLogin(
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/welcome").hasRole("USER")
+                        .requestMatchers("/products/catPd").hasRole("USER")
+                        .requestMatchers("/cart/mycart").hasRole("USER")
+                        .requestMatchers("/cart/decrease").hasRole("USER")
+                        .requestMatchers("/cart/increase").hasRole("USER")
+                        .requestMatchers("/cart/add").hasRole("USER")
+                        .requestMatchers("/index").permitAll()
+                        .requestMatchers("/deleteUser").hasRole("ADMIN")
+                        .requestMatchers("/deleteUser/delete").hasRole("ADMIN")
+                        .requestMatchers("/updateUser").hasRole("ADMIN")
+                        .requestMatchers("/updateUser/update").hasRole("ADMIN")
+                        .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/products/add").hasRole("ADMIN")
+                        .requestMatchers("/products/save").hasRole("ADMIN")
+                        .requestMatchers("/adminUI/initEdit").hasRole("ADMIN")
+                        .requestMatchers("/adminUI/deleteProduct").hasRole("ADMIN")
+                        .requestMatchers("/dashboard").hasRole("ADMIN")
+                        .requestMatchers("/adminUI/products/category").hasRole("ADMIN"))
+                .formLogin(
 
-						form -> form
-								.loginPage("/login")
-								.loginProcessingUrl("/login")
-								.successHandler(successHandler)
-								.permitAll())
-				.logout(
-						logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-								.permitAll());
+                        form -> form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
+                                .successHandler(successHandler)
+                                .permitAll())
+                .logout(
+                        logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .permitAll());
 		return http.build();
 
 	}

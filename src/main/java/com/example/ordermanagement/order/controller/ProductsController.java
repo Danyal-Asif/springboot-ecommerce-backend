@@ -50,7 +50,7 @@ public class ProductsController {
 	public String addProduct(@ModelAttribute ProductDTO pd) {
 		productService.saveProduct(pd);
 		System.out.println("*********** Product added Successfully! *************");
-		return "redirect:/admin";
+		return "redirect:/dashboard";
 	}
 
 	@GetMapping("/add")

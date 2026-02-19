@@ -68,7 +68,7 @@ public class AdminProductController {
 	public String editProduct(@ModelAttribute ProductDTO pd) {
 		productService.editProduct(pd);
 		System.out.println("*********** Product updated Successfully! *************");
-		return "redirect:/admin";
+		return "redirect:/dashboard";
 	}
 }
 

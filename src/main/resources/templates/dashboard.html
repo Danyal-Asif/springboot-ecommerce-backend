@@ -60,21 +60,27 @@
         <div class="col-md-4">
 
             <!-- Order Product Card -->
-            <div class="dashboard-card mb-4">
-                <h4 class="fw-bold mb-3">🛒 Start Shopping</h4>
-                <a th:href="@{/products/catPd}" class="btn btn-lg btn-primary w-100 fw-bold">
-                    <i class="fa fa-shopping-cart"></i> Order Product
+            <div class="dashboard-card mb-4">   
+                <h4 class="fw-bold mb-3">🛒 Add New Product</h4>
+                <a th:href="@{/products/add}" class="btn btn-lg btn-primary w-100 fw-bold">
+                    <i class="fa fa-shopping-cart"></i> Add Product
                 </a>
             </div>
 
             <!-- My Cart Card -->
             <div class="dashboard-card">
-                <h4 class="fw-bold mb-3">🧾 Your Cart</h4>
-                <a th:href="@{/cart/mycart}" class="btn btn-lg btn-success w-100 fw-bold">
-                    <i class="fa fa-cart-shopping"></i> My Cart
+                <h4 class="fw-bold mb-3">🧾 Edit Existing Product</h4>
+                <a th:href="@{/adminUI/products/category}" class="btn btn-lg btn-success w-100 fw-bold">
+                    <i class="fa fa-cart-shopping"></i> Edit Product
                 </a>
             </div>
 
+            <div class="dashboard-card">
+                <h4 class="fw-bold mb-3">🧾 Manage Users</h4>
+                <a th:href="@{/users}" class="btn btn-lg btn-success w-100 fw-bold">
+                    <i class="fa fa-cart-shopping"></i> All Users
+                </a>
+            </div>
         </div>
 
         <!-- RIGHT SIDE WELCOME -->
@@ -84,7 +90,7 @@
                 <span th:text="${#strings.capitalize(name)}" class="text-primary"></span> 👋
             </h2>
             <p class="text-muted mt-2 fs-5">
-                Manage your orders and shopping cart from here.
+                Manage your products and users from here.
             </p>
         </div>
 
