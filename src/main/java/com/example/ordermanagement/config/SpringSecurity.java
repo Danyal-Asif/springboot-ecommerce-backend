@@ -42,6 +42,8 @@ public class SpringSecurity {
                         .requestMatchers("/products/catPd").hasRole("USER")
                         .requestMatchers("/cart/mycart").hasRole("USER")
                         .requestMatchers("/cart/decrease").hasRole("USER")
+                        .requestMatchers("/cart/remove").hasRole("USER")
+                        .requestMatchers("/cart/empty").hasRole("USER")
                         .requestMatchers("/cart/increase").hasRole("USER")
                         .requestMatchers("/cart/add").hasRole("USER")
                         .requestMatchers("/index").permitAll()

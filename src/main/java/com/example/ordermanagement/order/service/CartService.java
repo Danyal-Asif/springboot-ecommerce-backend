@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.ordermanagement.order.DTO.CartDTO;
 import com.example.ordermanagement.order.model.Cart;
@@ -51,13 +52,34 @@ public class CartService {
         return Optional.of(cart);
     }
 
+    public Optional<Cart> getByUserIdAndProductId(Long product_id,Long user_id){
+        Cart cart=null;
+        cart=cartRepository.findByUserIdAndProductId(user_id, product_id);
+        if(cart==null){
+            return Optional.empty();
+        }
+        return Optional.of(cart);
+    }
+
     public List<CartDTO> getAllFromCart(Long user_id){
         List<Cart> cartItems=cartRepository.findAllByUserId(user_id);
         if(cartItems.isEmpty()){
             return null;
         }
-        return cartItems.stream().map(c->new CartDTO(c.getId(),c.getProduct_id().getName(),c.getPrice(),
+        return cartItems.stream().map(c->new CartDTO(c.getId(),c.getProduct_id().getId(),c.getProduct_id().getName(),c.getPrice(),
                 c.getQuantity(),
                 c.getTotalPrice())).toList();
+    }
+
+    public void deleteItemFromCart(Cart cart){
+        cartRepository.delete(cart);
+    }
+
+    @Transactional
+    public void emptyCart(Long userId){
+        cartRepository.deleteAllByUserId(userId);
+    }
+    public void UpdateCartItem(Cart cart){
+        cartRepository.save(cart);
     }
 }

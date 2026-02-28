@@ -3,6 +3,7 @@ package com.example.ordermanagement.order.controller;
 import java.security.Principal;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.ordermanagement.entity.User;
 import com.example.ordermanagement.order.DTO.CartDTO;
 import com.example.ordermanagement.order.model.Cart;
+import com.example.ordermanagement.order.model.Product;
 import com.example.ordermanagement.order.service.CartService;
 import com.example.ordermanagement.order.service.ProductService;
 import com.example.ordermanagement.service.UserService;
@@ -67,39 +69,24 @@ public class CartController {
     }
 
     @PostMapping("/decrease")
-    public String minusItem(@RequestParam Long productID, HttpSession session, Model model, Principal principal) {
+    public String minusItem(@RequestParam Long productID, HttpSession session, Principal principal) {
         User user = userService.findUserByEmail(principal.getName());
         if (user == null) {
             return "redirect:/order/login";
         }
-        List<Cart> custCart = user.getCart();
-
-        Iterator<Cart> iterator = custCart.iterator();
-
-        while (iterator.hasNext()) {
-            Cart c = iterator.next();
-            if (c.getId().equals(productID)) {
-                if (c.getQuantity() <= 1) {
-                    custCart.remove(c);
-                } else {
-                    c.setQuantity(c.getQuantity() - 1);
-                    c.setTotalPrice(c.getPrice() * c.getQuantity());
-                }
-                break;
-            }
-
+        Optional<Cart> cartItem=cartService.getByUserIdAndProductId(productID,user.getId());
+        int productQuantity=cartItem.get().getQuantity();
+        if(productQuantity<=1){
+            cartService.deleteItemFromCart(cartItem.get());
         }
-        List<Cart> cartItems = user.getCart();
-        double checkoutPrice = 0;
-        for (Cart cart : cartItems) {
-            checkoutPrice += cart.getTotalPrice();
+        else{
+            Cart cart=cartItem.get();
+            cart.setQuantity(productQuantity-1); 
+            double totalPrice=cart.getTotalPrice()-cart.getPrice();
+            cart.setTotalPrice(totalPrice);
+            cartService.UpdateCartItem(cart);
         }
-        model.addAttribute("checkoutPrice", checkoutPrice);
-
-        model.addAttribute("name", user.getName());
-        model.addAttribute("cartItems", user.getCart());
-
-        return "cart-page";
+        return "redirect:/cart/mycart";
     }
 
     @PostMapping("/increase")
@@ -108,30 +95,16 @@ public class CartController {
         if (user == null) {
             return "redirect:/order/login";
         }
-        List<Cart> custCart = user.getCart();
-
-        Iterator<Cart> iterator = custCart.iterator();
-
-        while (iterator.hasNext()) {
-            Cart c = iterator.next();
-            if (c.getId().equals(productID)) {
-                c.setQuantity(c.getQuantity() + 1);
-                c.setTotalPrice(c.getPrice() * c.getQuantity());
-                break;
-            }
-
+        Optional<Cart> cartItem=cartService.getByUserIdAndProductId(productID,user.getId());
+         int productQuantity=cartItem.get().getQuantity();
+         if(cartItem.isPresent()){
+            Cart cart=cartItem.get();
+            cart.setQuantity(productQuantity+1); 
+            double totalPrice=cart.getQuantity()*cart.getPrice();
+            cart.setTotalPrice(totalPrice);
+            cartService.UpdateCartItem(cart);
         }
-        List<Cart> cartItems = user.getCart();
-        double checkoutPrice = 0;
-        for (Cart cart : cartItems) {
-            checkoutPrice += cart.getTotalPrice();
-        }
-        model.addAttribute("checkoutPrice", checkoutPrice);
-
-        model.addAttribute("name", user.getName());
-        model.addAttribute("cartItems", user.getCart());
-
-        return "cart-page";
+        return "redirect:/cart/mycart";
     }
 
     @PostMapping("/remove")
@@ -140,28 +113,20 @@ public class CartController {
         if (user == null) {
             return "redirect:/order/login";
         }
-        List<Cart> custCart = user.getCart();
-
-        Iterator<Cart> iterator = custCart.iterator();
-
-        while (iterator.hasNext()) {
-            Cart c = iterator.next();
-            if (c.getId().equals(productID)) {
-                custCart.remove(c);
-                break;
-            }
-
+        Optional<Cart> cartItem=cartService.getByUserIdAndProductId(productID,user.getId());
+        if(cartItem.isPresent()){
+            cartService.deleteItemFromCart(cartItem.get());
         }
-        List<Cart> cartItems = user.getCart();
-        double checkoutPrice = 0;
-        for (Cart cart : cartItems) {
-            checkoutPrice += cart.getTotalPrice();
+        return "redirect:/cart/mycart";
+    }
+
+    @PostMapping("/empty")
+    public String emptyCart(HttpSession session, Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
+        if (user == null) {
+            return "redirect:/order/login";
         }
-        model.addAttribute("checkoutPrice", checkoutPrice);
-
-        model.addAttribute("name", user.getName());
-        model.addAttribute("cartItems", user.getCart());
-
-        return "cart-page";
+        cartService.emptyCart(user.getId());
+         return "redirect:/cart/mycart";
     }
 }
