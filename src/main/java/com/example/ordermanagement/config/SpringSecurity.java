@@ -57,7 +57,9 @@ public class SpringSecurity {
                         .requestMatchers("/adminUI/initEdit").hasRole("ADMIN")
                         .requestMatchers("/adminUI/deleteProduct").hasRole("ADMIN")
                         .requestMatchers("/dashboard").hasRole("ADMIN")
-                        .requestMatchers("/adminUI/products/category").hasRole("ADMIN"))
+                        .requestMatchers("/adminUI/products/category").hasRole("ADMIN")
+                        .requestMatchers("/adminUI/edit").hasRole("ADMIN")
+                )
                 .formLogin(
 
                         form -> form
