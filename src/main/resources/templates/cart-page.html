@@ -60,14 +60,29 @@
                                         <button type="submit" class="btn btn-outline-secondary">−</button>
                                     </form>
 
-                                    <!-- Quantity (display only) -->
+                                    <!-- Quantity -->
                                     <span class="btn btn-outline-secondary disabled" th:text="${item.quantity}"></span>
 
                                     <!-- Increase -->
                                     <form th:action="@{/cart/increase}" method="post" class="d-inline">
                                         <input type="hidden" name="productID" th:value="${item.product_id}" />
-                                        <button type="submit" class="btn btn-outline-secondary">+</button>
+                                        <button type="submit" class="btn btn-outline-secondary"
+                                            th:disabled="${item.remainingStock < 1}">+</button>
                                     </form>
+
+                                </div>
+
+                                <!-- Max stock -->
+                                <div class="small mt-1" th:classappend="${item.remainingStock == 0} ? 'text-danger' :
+                     (${item.remainingStock < 5} ? 'text-warning' : 'text-muted')">
+
+                                    <span th:if="${item.remainingStock == 0}">❌ Out of Stock</span>
+                                    <span th:if="${item.remainingStock > 0 and item.remainingStock < 5}">
+                                        ⚠ Low Stock (<span th:text="${item.remainingStock}"></span>)
+                                    </span>
+                                    <span th:if="${item.remainingStock >= 5}">
+                                        Remaining: <span th:text="${item.remainingStock}"></span>
+                                    </span>
 
                                 </div>
                             </td>

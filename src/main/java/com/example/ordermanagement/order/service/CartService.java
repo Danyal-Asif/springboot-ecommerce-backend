@@ -1,5 +1,6 @@
 package com.example.ordermanagement.order.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,9 +67,19 @@ public class CartService {
         if(cartItems.isEmpty()){
             return null;
         }
-        return cartItems.stream().map(c->new CartDTO(c.getId(),c.getProduct_id().getId(),c.getProduct_id().getName(),c.getPrice(),
-                c.getQuantity(),
-                c.getTotalPrice())).toList();
+        int remainingStock=0;
+        List<CartDTO> cartDTO=new ArrayList<CartDTO>();
+        for(Cart item:cartItems){
+            System.out.println("Quantity in stock : "+item.getProduct_id().getInStock());
+            System.out.println("Quantity in cart : "+item.getQuantity());
+            remainingStock=item.getProduct_id().getInStock()-item.getQuantity();
+            System.out.println("Remaining Stock : "+remainingStock);
+            cartDTO.add(new CartDTO(item.getId(),item.getProduct_id().getId(),item.getProduct_id().getName(),item.getPrice(),
+                item.getQuantity(),
+                item.getTotalPrice(),remainingStock));
+        }
+
+        return cartDTO;
     }
 
     public void deleteItemFromCart(Cart cart){

@@ -6,5 +6,6 @@ public record CartDTO(
     String productName,
     double price,
     int quantity,
-    double totalPrice
+    double totalPrice,
+    int remainingStock
 ) {}
