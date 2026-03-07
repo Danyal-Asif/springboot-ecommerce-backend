@@ -37,9 +37,12 @@ public class CartService {
         else{
             // product exists in the cart already
             Cart updatedCart=cart.get();
+            if(updatedCart.getProduct_id().getInStock()>updatedCart.getQuantity())
+            {
             updatedCart.setQuantity(updatedCart.getQuantity()+1);
             updatedCart.setTotalPrice(updatedCart.getPrice()*updatedCart.getQuantity());
             cartRepository.save(updatedCart);
+            }
             return true;
         }
     }
@@ -70,15 +73,11 @@ public class CartService {
         int remainingStock=0;
         List<CartDTO> cartDTO=new ArrayList<CartDTO>();
         for(Cart item:cartItems){
-            System.out.println("Quantity in stock : "+item.getProduct_id().getInStock());
-            System.out.println("Quantity in cart : "+item.getQuantity());
             remainingStock=item.getProduct_id().getInStock()-item.getQuantity();
-            System.out.println("Remaining Stock : "+remainingStock);
             cartDTO.add(new CartDTO(item.getId(),item.getProduct_id().getId(),item.getProduct_id().getName(),item.getPrice(),
                 item.getQuantity(),
                 item.getTotalPrice(),remainingStock));
         }
-
         return cartDTO;
     }
 

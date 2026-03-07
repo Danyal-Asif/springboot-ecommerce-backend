@@ -1,7 +1,6 @@
 package com.example.ordermanagement.order.controller;
 
 import java.security.Principal;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.ordermanagement.entity.User;
 import com.example.ordermanagement.order.DTO.CartDTO;
 import com.example.ordermanagement.order.model.Cart;
-import com.example.ordermanagement.order.model.Product;
 import com.example.ordermanagement.order.service.CartService;
 import com.example.ordermanagement.order.service.ProductService;
 import com.example.ordermanagement.service.UserService;

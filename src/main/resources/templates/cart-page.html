@@ -38,10 +38,9 @@
                             <!-- Product -->
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <!-- <img th:src="@{/images/sample.png}"
-                                 class="me-3"
-                                 style="width:60px;height:60px;object-fit:cover;"> -->
-                                    <span th:text="${item.productName}"></span>
+                                    <span th:text="${item.productName}"
+                                        th:classappend="${item.remainingStock+item.quantity == 0} ? 'text-decoration-line-through text-danger' : ''">
+                                    </span>
                                 </div>
                             </td>
 
