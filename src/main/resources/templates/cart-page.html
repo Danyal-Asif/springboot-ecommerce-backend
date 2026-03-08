@@ -34,7 +34,9 @@
                     </thead>
 
                     <tbody>
-                        <tr th:each="item : ${cartItems}">
+                        <tr th:each="item : ${cartItems}"
+                            th:attr="data-invalid=${item.remainingStock + item.quantity == 0}" 
+                             th:classappend="${item.remainingStock + item.quantity == 0} ? 'table-danger' : ''">
                             <!-- Product -->
                             <td>
                                 <div class="d-flex align-items-center">
@@ -123,6 +125,11 @@
                                 🗑 Empty Cart
                             </button>
                         </form>
+                        <form th:action="@{/checkout}" id="checkoutForm" method="get" class="d-inline">
+                            <button type="button" class="btn btn-success" onclick="validateCheckout()">
+                                🛒 Checkout
+                            </button>
+                        </form>
                     </div>
 
                     <!-- Right side total -->
@@ -141,5 +148,17 @@
     </div>
 
 </body>
+<script>
+function validateCheckout() {
 
+    let rows = document.querySelectorAll("tr[data-invalid='true']");
+
+    if (rows.length > 0) {
+        alert("❌ Some products are out of stock. Please update your cart.");
+        return;
+    }
+
+    document.getElementById("checkoutForm").submit();
+}
+</script>
 </html>

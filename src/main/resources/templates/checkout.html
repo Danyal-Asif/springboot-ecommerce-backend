@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .order-items {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .checkout-section {
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+        }
+    </style>
+
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+
+        <div class="row">
+
+            <!-- LEFT SIDE CHECKOUT -->
+            <div class="col-md-8 bg-white p-4">
+
+                <form th:action="@{/place-order}" method="post">
+
+                    <!-- STEP 1 -->
+                    <div class="checkout-section">
+
+                        <h5>1. Email Address</h5>
+
+                        <input type="email" class="form-control mt-2" name="email" th:value="${email}"
+                            disabled>
+
+                    </div>
+
+
+                    <!-- STEP 2 -->
+                    <div class="checkout-section">
+
+                        <h5>2. Phone Number</h5>
+
+                        <input type="text" class="form-control mt-2" name="phone" placeholder="Enter phone number"
+                            required>
+
+                    </div>
+
+
+                    <!-- STEP 3 -->
+                    <div class="checkout-section">
+
+                        <h5>3. Shipping Address</h5>
+
+                        <div class="mb-3 mt-2">
+                            <input type="text" class="form-control" name="fullName" placeholder="Full Name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="address" placeholder="Street Address"
+                                required>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control" name="city" placeholder="City" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <input type="text" class="form-control" name="postalCode" placeholder="Postal Code"
+                                    required>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 4 PAYMENT -->
+                    <div class="checkout-section">
+
+                        <h5>4. Payment</h5>
+
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="radio" name="paymentMethod" value="COD" checked>
+
+                            <label class="form-check-label">
+                                Cash on Delivery
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" value="CARD">
+
+                            <label class="form-check-label">
+                                Credit / Debit Card
+                            </label>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="paymentMethod" value="PAYPAL">
+
+                            <label class="form-check-label">
+                                PayPal
+                            </label>
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEP 5 PLACE ORDER -->
+                    <div>
+
+                        <h5>5. Place Your Order</h5>
+
+                        <button class="btn btn-success mt-3">
+                            Place Your Order
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- RIGHT SIDE ORDER SUMMARY -->
+            <div class="col-md-4 border-start bg-light p-4">
+
+                <h5 class="mb-4">Order summary</h5>
+
+                <div class="order-items">
+
+                    <div class="card mb-3 p-3" th:each="item : ${cartItems}">
+
+                        <div class="d-flex justify-content-between">
+
+                            <div class="flex-grow-1">
+
+                                <strong th:text="${item.productName}"></strong>
+
+                                <div class="text-muted small">
+                                    Color: <span>red</span>
+                                </div>
+
+                                <div class="text-muted small">
+                                    Quantity:
+                                    <span th:text="${item.quantity}"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="fw-bold" th:text="'£' + ${item.price}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between">
+                    <span>Subtotal</span>
+                    <span th:text="'£' + ${checkoutDetail.subTotal}"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <span>Shipping</span>
+                    <span th:text="${checkoutDetail.shipping == 0 ? 'Free' : '£' + checkoutDetail.shipping}"></span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between fw-bold">
+                    <span>Total (incl. VAT)</span>
+                    <span th:text="'£' + ${checkoutDetail.total}"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
