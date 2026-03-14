@@ -1,35 +1,28 @@
 package com.example.ordermanagement.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.ManyToOne;
+
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name="address")
+@Table(name = "address")
 public class Address {
     @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @OneToMany(fetch=FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-			name="users",
-			joinColumns= {@JoinColumn(name="id",referencedColumnName="ID")},
-			inverseJoinColumns= {@JoinColumn(name="ROLE_ID",referencedColumnName="ID")})
-	private List<User> user_id=new ArrayList<>();
-    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private String phone;
 
@@ -41,5 +34,65 @@ public class Address {
 
     @Column(nullable = true)
     private String postalCode;
+
     
+
+    public Address(User user, String phone, String address, String city, String postalCode) {
+        this.user = user;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    
+
 }

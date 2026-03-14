@@ -2,9 +2,6 @@ package com.example.ordermanagement.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.ordermanagement.order.model.Cart;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -12,33 +9,41 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-	private static final long serialVersionUID=1L;
+	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String name;
-	@Column(nullable=false,unique=true)
+	@Column(nullable = false, unique = true)
 	private String email;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String password;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "users_roles", joinColumns = {
+			@JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") })
+	private List<Role> roles = new ArrayList<>();
 	
-	@ManyToMany(fetch=FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(
-			name="users_roles",
-			joinColumns= {@JoinColumn(name="USER_ID",referencedColumnName="ID")},
-			inverseJoinColumns= {@JoinColumn(name="ROLE_ID",referencedColumnName="ID")})
-	private List<Role> roles=new ArrayList<>();
-	
-	 @Transient
-private List<Cart> cart;
-	
+	@Column(nullable = true)
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<Address> addresses=new ArrayList<>();
+
 	public Long getId() {
 		return id;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 	public void setId(Long id) {
@@ -79,14 +84,6 @@ private List<Cart> cart;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}	
-	
-	public List<Cart> getCart() {
-	return cart;
-}
+	}
 
-public void setCart(List<Cart> cart) {
-	this.cart = cart;
-}
-	
 }

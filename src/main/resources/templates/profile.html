@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Settings</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .sidebar a.active {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .sidebar a:hover {
+            background: #e9ecef;
+        }
+
+        .save-btn {
+            background: #1c2bd6;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 6px;
+            border: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <h4 class="mb-4 fw-bold">Account Settings</h4>
+
+        <div class="row">
+
+            <!-- SIDEBAR -->
+            <div class="col-md-3">
+
+                <div class="sidebar">
+
+                    <a th:href="@{/user/profile}" th:classappend="${!showPasswordForm} ? 'active'">
+                        👤 Profile Settings
+                    </a>
+
+                    <a th:href="@{/user/password}" th:classappend="${showPasswordForm} ? 'active'">
+                        🔒 Password
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE SETTINGS FORM -->
+            <div class="col-md-9">
+
+                <div class="profile-card">
+
+                    <!-- PROFILE FORM -->
+                    <div th:if="${!showPasswordForm}">
+
+                        <form th:action="@{/user/updateProfile}" method="post">
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" name="firstName" th:value="${firstName}">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" name="lastName" th:value="${lastName}">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" disabled class="form-control" name="email" th:value="${email}">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" name="phone" th:value="${phone}">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city" th:value="${city}">
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" name="postalCode" th:value="${postalCode}">
+                                </div>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" rows="3" name="address" th:text="${address}"></textarea>
+                            </div>
+
+                            <button class="save-btn mt-3">
+                                Save Changes
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- PASSWORD FORM -->
+                    <div th:if="${showPasswordForm}">
+
+                        <form th:action="@{/user/updatePassword}" method="post">
+
+                            <div class="mb-3">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" name="password">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirmPassword">
+                            </div>
+
+                            <button class="save-btn mt-3">
+                                Update Password
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+```
