@@ -119,12 +119,6 @@ public class UserServiceImpl implements UserService {
 			// Update the user details
 			user.setName(firstName + " " + lastName);
 
-			System.out.println("Inside update User");
-			System.out.println(address.get(0).getCity());
-                System.out.println(address.get(0).getAddress());
-                System.out.println(address.get(0).getPhone());
-                System.out.println(address.get(0).getPostalCode());
-
 			user.setAddresses(address);
 			// Save the updated user
 			userRepository.save(user);

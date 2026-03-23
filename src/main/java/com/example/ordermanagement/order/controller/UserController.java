@@ -1,6 +1,7 @@
 package com.example.ordermanagement.order.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,12 @@ public class UserController {
                 User user=userService.findUserByEmail(principal.getName());
                 Address userAddress=new Address(user, addressDto.phone(), 
                 addressDto.address(), addressDto.city(), addressDto.postalCode());
+                List<Address> addressList=new ArrayList<>(List.of(userAddress));
                 userService.updateUser(
                     userDto.getFirstName(),
                     userDto.getLastName(),
                         userDto.getEmail(),
-                        List.of(userAddress));
-
-
+                        addressList);   
             }
 
         } catch (Exception e) {
