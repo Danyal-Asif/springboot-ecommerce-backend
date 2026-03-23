@@ -2,7 +2,6 @@ package com.example.ordermanagement.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 
 public class UserDto {
@@ -14,7 +13,6 @@ public class UserDto {
 	@Size(max = 50)
 	private String lastName;
 	
-	@Null(message = "Email must be empty", groups = UpdateValidation.class)
 	@NotEmpty(message="Email should not be empty")
 	@Email
 	private String email;

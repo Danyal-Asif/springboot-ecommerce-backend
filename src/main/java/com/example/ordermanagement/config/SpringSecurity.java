@@ -49,6 +49,7 @@ public class SpringSecurity {
                         .requestMatchers("/checkout").hasRole("USER")
                         .requestMatchers("/user/profile").hasRole("USER")
                         .requestMatchers("/user/password").hasRole("USER")
+                        .requestMatchers("/user/updateProfile").hasRole("USER")
                         .requestMatchers("/index").permitAll()
                         .requestMatchers("/deleteUser").hasRole("ADMIN")
                         .requestMatchers("/deleteUser/delete").hasRole("ADMIN")

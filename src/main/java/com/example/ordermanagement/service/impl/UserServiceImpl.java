@@ -110,5 +110,28 @@ public class UserServiceImpl implements UserService {
 			throw new EntityNotFoundException("User with email " + email + " not found");
 		}
 	}
+	@Override
+	@Transactional
+	public void updateUser(String firstName, String lastName,String email,List<Address> address) {
+		// Find the user by email
+		User user = userRepository.findByEmail(email);
+		if (user != null) {
+			// Update the user details
+			user.setName(firstName + " " + lastName);
+
+			System.out.println("Inside update User");
+			System.out.println(address.get(0).getCity());
+                System.out.println(address.get(0).getAddress());
+                System.out.println(address.get(0).getPhone());
+                System.out.println(address.get(0).getPostalCode());
+
+			user.setAddresses(address);
+			// Save the updated user
+			userRepository.save(user);
+		} else {
+			// Handle the case where the user does not exist
+			throw new EntityNotFoundException("User with email " + email + " not found");
+		}
+	}
 
 }

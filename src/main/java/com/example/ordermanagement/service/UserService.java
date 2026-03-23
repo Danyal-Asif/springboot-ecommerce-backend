@@ -3,6 +3,7 @@ package com.example.ordermanagement.service;
 import java.util.List;
 
 import com.example.ordermanagement.dto.UserDto;
+import com.example.ordermanagement.entity.Address;
 import com.example.ordermanagement.entity.User;
 
 public interface UserService {
@@ -17,6 +18,7 @@ public interface UserService {
 	void deleteUser(User user);
 	
 	void updateUser(String firstName,String lastName,String email,String password);
+	void updateUser(String firstName,String lastName,String email,List<Address> addresses);
 
 	
 

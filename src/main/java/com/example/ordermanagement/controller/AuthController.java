@@ -110,9 +110,7 @@ public class AuthController {
 	public String update(@Validated(UpdateValidation.class) @Valid @ModelAttribute("user") UserDto userDto,
 			@RequestParam("newPassword") String newPassword,
 			BindingResult result, Model model, @RequestParam("hiddenEmail") String email) {
-		System.out.println("line 102" + email);
 		User userName = userService.findUserByEmail(email);
-		System.out.println("hidden email" + email);
 		try {
 			Authentication auth = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(userName.getEmail(), userDto.getPassword()));

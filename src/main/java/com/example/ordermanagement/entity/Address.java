@@ -35,7 +35,7 @@ public class Address {
     @Column(nullable = true)
     private String postalCode;
 
-    
+    public Address(){};
 
     public Address(User user, String phone, String address, String city, String postalCode) {
         this.user = user;
