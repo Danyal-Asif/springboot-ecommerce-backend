@@ -65,7 +65,7 @@ public class ProductsController {
 		if (user == null) {
 			return "redirect:/login";
 		}
-		model.addAttribute("name", "Welcome, " + user.getName() + " 😎");
+		model.addAttribute("name", "" + user.getName() + " 😎");
 		List<Product> products;
 		if (pCategory == null || pCategory.isBlank()) {
 			products = productService.getAllProducts();

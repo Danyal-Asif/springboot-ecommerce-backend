@@ -46,6 +46,7 @@ public class UserController {
         model.addAttribute("lastName", names.length > 1 ? names[1] : "");
         model.addAttribute("email", principal.getName());
         model.addAttribute("showPasswordForm", false);
+
         // model.addAttribute("phone", user.getAddresses().get(1).getPhone());
         // model.addAttribute("city", user.getAddresses().get(1).getCity());
         // model.addAttribute("address", user.getAddresses().get(1).getAddress());
