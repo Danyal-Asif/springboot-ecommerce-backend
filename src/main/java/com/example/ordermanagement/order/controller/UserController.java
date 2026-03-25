@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.ordermanagement.dto.AddressDTO;
 import com.example.ordermanagement.dto.UserDto;
 import com.example.ordermanagement.entity.Address;
+import com.example.ordermanagement.entity.AddressType;
 import com.example.ordermanagement.entity.User;
 import com.example.ordermanagement.service.UserService;
 
@@ -68,7 +69,7 @@ public class UserController {
             if (principal.getName().equals(userDto.getEmail())) {
                 User user=userService.findUserByEmail(principal.getName());
                 Address userAddress=new Address(user, addressDto.phone(), 
-                addressDto.address(), addressDto.city(), addressDto.postalCode());
+                addressDto.address(), addressDto.city(), addressDto.postalCode(),AddressType.valueOf(addressDto.addressType()));
                 List<Address> addressList=new ArrayList<>(List.of(userAddress));
                 userService.updateUser(
                     userDto.getFirstName(),
