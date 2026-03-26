@@ -19,6 +19,15 @@
             padding-bottom: 25px;
             margin-bottom: 25px;
         }
+        .address-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-check:checked + .address-card {
+    border: 2px solid #0d6efd;
+    background-color: #f0f7ff;
+}
     </style>
 
 </head>
@@ -59,31 +68,64 @@
                     <!-- STEP 3 -->
                     <div class="checkout-section">
 
-                        <h5>3. Shipping Address</h5>
+    <h5>3. Shipping Address</h5>
 
-                        <div class="mb-3 mt-2">
-                            <input type="text" class="form-control" name="fullName" placeholder="Full Name" required>
-                        </div>
+    <div class="row mt-3">
 
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="address" placeholder="Street Address"
-                                required>
-                        </div>
+        <!-- HOME -->
+        <div class="col-md-4">
+            <input type="radio" class="btn-check" name="selectedAddress" id="home" value="HOME" checked>
 
-                        <div class="row">
+            <label class="address-card w-100 p-3 border rounded" for="home">
+                <div class="d-flex align-items-center mb-2">
+                    <strong>Home</strong>
+                </div>
 
-                            <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control" name="city" placeholder="City" required>
-                            </div>
+                <div class="text-muted small">
+                    House 12, Street 8<br>
+                    Satellite Town<br>
+                    Rawalpindi, 46000
+                </div>
+            </label>
+        </div>
 
-                            <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control" name="postalCode" placeholder="Postal Code"
-                                    required>
-                            </div>
+        <!-- BUSINESS -->
+        <div class="col-md-4">
+            <input type="radio" class="btn-check" name="selectedAddress" id="business" value="BUSINESS">
 
-                        </div>
+            <label class="address-card w-100 p-3 border rounded" for="business">
+                <div class="d-flex align-items-center mb-2">
+                    <strong>Business</strong>
+                </div>
 
-                    </div>
+                <div class="text-muted small">
+                    Office 203, Plaza 1<br>
+                    Saddar<br>
+                    Rawalpindi, 46000
+                </div>
+            </label>
+        </div>
+
+        <!-- OTHER -->
+        <div class="col-md-4">
+            <input type="radio" class="btn-check" name="selectedAddress" id="other" value="OTHER">
+
+            <label class="address-card w-100 p-3 border rounded" for="other">
+                <div class="d-flex align-items-center mb-2">
+                    <strong>Other</strong>
+                </div>
+
+                <div class="text-muted small">
+                    Flat 304, Askari 10<br>
+                    Chaklala Scheme III<br>
+                    Rawalpindi, 46000
+                </div>
+            </label>
+        </div>
+
+    </div>
+
+</div>
 
 
                     <!-- STEP 4 PAYMENT -->
