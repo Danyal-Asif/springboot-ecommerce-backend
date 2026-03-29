@@ -1,7 +1,5 @@
 package com.example.ordermanagement.entity;
 
-import com.example.ordermanagement.order.model.ProductCategory;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,9 +12,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "address")
+@Table(name = "address",uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","addressType"}))
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

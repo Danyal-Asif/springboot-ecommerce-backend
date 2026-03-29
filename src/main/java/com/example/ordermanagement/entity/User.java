@@ -30,7 +30,7 @@ public class User {
 					@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") })
 	private List<Role> roles = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Address> addresses=new ArrayList<>();
 
 	public Long getId() {
